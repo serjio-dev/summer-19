@@ -1,12 +1,11 @@
 <?php
-require_once '../src/DataBase/Connection.php';
+require_once '../load.php';
 
-$pdo = App\DataBase\Connection::createConnect();
+$userRepository = new \App\Repositories\UserRepository();
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $stmt = $pdo->query('SELECT * FROM users WHERE id = '. $id);
-    $user = $stmt->fetch();
+    $user = $userRepository->get($id);
 
     echo '<form name="update" method="post" action="update.php">
     <input type="hidden" name="id" value="'. $user['id'] .'">
@@ -22,18 +21,13 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
-    $stmt = $pdo->query('SELECT * FROM users WHERE id = '. $id);
-    $user = $stmt->fetch();
+    $user = $userRepository->get($id);
 
     $user['first_name'] = $_POST['first_name'];
     $user['last_name'] = $_POST['last_name'];
     $user['email'] = $_POST['email'];
 
-    $pdo->exec(' UPDATE users  SET 
-                   first_name = "'. $user['first_name'].'", 
-                   last_name = "'. $user['last_name'].'", 
-                   email = "'. $user['email'].'"
-                     WHERE id = '. $id);
+    $userRepository->update($id, $user);
 
     header("Location: /user/show.php");
 }

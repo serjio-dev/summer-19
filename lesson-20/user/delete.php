@@ -1,12 +1,11 @@
 <?php
-require_once '../src/DataBase/Connection.php';
+require_once '../load.php';
 
-$pdo = App\DataBase\Connection::createConnect();
+$userRepository = new \App\Repositories\UserRepository();
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $stmt = $pdo->query('SELECT * FROM users WHERE id = ' . $id);
-    $user = $stmt->fetch();
+    $user = $userRepository->get($id);
 
     if (!empty($user)) {
         echo '<form name="delete" method="post" action="delete.php">
@@ -24,7 +23,7 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
-    $pdo->exec('DELETE FROM users WHERE id = '. $id);
+    $userRepository->delete($id);
 
     header("Location: /user/show.php");
 }

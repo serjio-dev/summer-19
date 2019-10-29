@@ -1,16 +1,14 @@
 <?php
-require_once '../src/DataBase/Connection.php';
+require_once '../load.php';
 
-$pdo = App\DataBase\Connection::createConnect();
+$userRepository = new \App\Repositories\UserRepository();
 
 if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['email'])) {
     $user['first_name'] = $_POST['first_name'];
     $user['last_name'] = $_POST['last_name'];
     $user['email'] = $_POST['email'];
 
-    $pdo->exec('INSERT INTO users (first_name, last_name, email) VALUE 
-                   ("'. $user['first_name'].'", "'. $user['last_name'].'", "'. $user['email'].'")'
-    );
+    $userRepository->create($user);
 
     header("Location: /user/show.php");
 }

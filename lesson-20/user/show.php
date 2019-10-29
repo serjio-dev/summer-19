@@ -1,11 +1,9 @@
 <?php
-require_once '../src/DataBase/Connection.php';
+require_once '../load.php';
 
-$pdo = App\DataBase\Connection::createConnect();
+$userRepository = new \App\Repositories\UserRepository();
+$users =  $userRepository->getList();
 
-$stmt = $pdo->query('SELECT * FROM users');
-
-$users =  $stmt->fetchAll();
 echo '<a href="create.php">Create user</a>';
 echo '<table border="1">';
 echo '<tr>';
