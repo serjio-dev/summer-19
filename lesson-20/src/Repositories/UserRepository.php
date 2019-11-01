@@ -31,22 +31,46 @@ class UserRepository
 
     public function update(int $id, array $user)
     {
-        $this->pdo->exec(' UPDATE users  SET 
-                   first_name = "'. $user['first_name'].'", 
-                   last_name = "'. $user['last_name'].'", 
-                   email = "'. $user['email'].'"
-                     WHERE id = '. $id);
+        $stmt = $this->pdo->prepare(' UPDATE users  SET 
+                   first_name = :first_name, 
+                   last_name = :last_name, 
+                   email = :email
+                     WHERE id = :id'
+        );
+
+        $firstName = $user['first_name'];
+        $lastName = $user['last_name'];
+
+        $stmt->bindParam('first_name', $firstName, \PDO::PARAM_STR );
+        $stmt->bindValue('last_name', $lastName, \PDO::PARAM_STR );
+        $stmt->bindValue('email', $user['email'], \PDO::PARAM_STR );
+        $stmt->bindValue('id', $id, \PDO::PARAM_INT );
+
+        $stmt->execute();
     }
 
     public function create(array $user)
     {
-        $this->pdo->exec('INSERT INTO users (first_name, last_name, email) VALUE 
-                   ("'. $user['first_name'].'", "'. $user['last_name'].'", "'. $user['email'].'")'
-        );
+        $stmt = $this->getStmtInsert();
+        $stmt->execute([
+            $user['first_name'],
+            $user['last_name'],
+            $user['last_name'],
+        ]);
     }
 
-    public function delete(int $id)
+    public function delete($id)
     {
-        $this->pdo->exec('DELETE FROM users WHERE id = '. $id);
+        $stmt = $this->pdo->prepare('DELETE FROM users WHERE id = :id');
+        $stmt->bindValue('id', $id );
+
+        $stmt->execute();
+    }
+
+    private function getStmtInsert(): \PDOStatement
+    {
+        return $this->pdo->prepare(
+            'INSERT INTO users (first_name, last_name, email) VALUES(?, ?, ?)'
+        );
     }
 }

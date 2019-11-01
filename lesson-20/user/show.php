@@ -13,6 +13,7 @@ echo '<th>Email</th>';
 echo '<th>Create</th>';
 echo '<th>Action</th>';
 echo '</tr>';
+
 foreach ($users as $user) {
     echo '<tr>';
     echo '<td>' . $user['first_name'] . '</td>';
