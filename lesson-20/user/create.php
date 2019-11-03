@@ -20,5 +20,7 @@ echo '<form name="create" method="post" action="create.php">
     <br>
     <input type="text" name="email" value="" placeholder="Email">
     <br>
+    <input type="text" name="phone" value="" placeholder="Phone">
+    <br>
     <input type="submit" value="Save">
     </form>';

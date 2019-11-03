@@ -55,7 +55,7 @@ class UserRepository
         $stmt->execute([
             $user['first_name'],
             $user['last_name'],
-            $user['last_name'],
+            $user['email'],
         ]);
     }
 
