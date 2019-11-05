@@ -22,6 +22,16 @@ class UserRepository
         return $stmt->fetch();
     }
 
+    public function getListWithPhone()
+    {
+        $stmt = $this->pdo->query('SELECT users.id, users.first_name, users.last_name,
+       users.email, phones.number as phone
+       FROM users
+        LEFT JOIN phones on users.phone_id = phones.id');
+
+        return $stmt->fetchAll();
+    }
+
     public function getList()
     {
         $stmt = $this->pdo->query('SELECT * FROM users');
@@ -49,13 +59,14 @@ class UserRepository
         $stmt->execute();
     }
 
-    public function create(array $user)
+    public function create(array $user, int $phoneId)
     {
         $stmt = $this->getStmtInsert();
         $stmt->execute([
             $user['first_name'],
             $user['last_name'],
             $user['email'],
+            $phoneId,
         ]);
     }
 
@@ -70,7 +81,7 @@ class UserRepository
     private function getStmtInsert(): \PDOStatement
     {
         return $this->pdo->prepare(
-            'INSERT INTO users (first_name, last_name, email) VALUES(?, ?, ?)'
+            'INSERT INTO users (first_name, last_name, email, phone_id) VALUES(?, ?, ?, ?)'
         );
     }
 }

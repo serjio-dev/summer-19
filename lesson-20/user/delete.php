@@ -1,6 +1,5 @@
 <?php
-require_once '../load.php';
-
+require_once '../vendor/autoload.php';
 $userRepository = new \App\Repositories\UserRepository();
 
 if (isset($_GET['id'])) {
