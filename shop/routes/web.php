@@ -14,4 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/hw', 'HelloController@hello')->name('hw');
+
+Route::get('/posts', 'PostController@getPosts')->name('posts_all');
+Route::get('/posts/{id}', 'PostController@getPost')->name('post_get');
