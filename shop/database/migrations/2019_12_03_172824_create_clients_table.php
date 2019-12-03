@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateValuesTable extends Migration
+class CreateClientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_values', function (Blueprint $table) {
+        Schema::create('shop_clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('shop_value_types');
-
             $table->string('name', 100);
-
+            $table->string('phone', 20);
+            $table->string('email', 30);
+            $table->string('address');
+            $table->enum('status', ['new', 'silver', 'gold', 'black']);
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_values');
+        Schema::dropIfExists('shop_clients');
     }
 }

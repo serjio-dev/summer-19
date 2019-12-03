@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateValuesTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_values', function (Blueprint $table) {
+        Schema::create('shop_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('shop_value_types');
-
-            $table->string('name', 100);
-
+            $table->bigInteger('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('shop_clients');
+            $table->enum('status', ['new', 'approved', 'paid', 'done', 'removed']);
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_values');
+        Schema::dropIfExists('shop_orders');
     }
 }

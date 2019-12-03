@@ -36,6 +36,6 @@ class CreateProductValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_values');
+        Schema::dropIfExists('shop_product_values');
     }
 }

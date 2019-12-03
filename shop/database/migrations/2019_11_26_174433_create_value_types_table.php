@@ -27,6 +27,6 @@ class CreateValueTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('value_types');
+        Schema::dropIfExists('shop_value_types');
     }
 }
