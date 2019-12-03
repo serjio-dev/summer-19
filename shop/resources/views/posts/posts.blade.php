@@ -20,3 +20,8 @@
     @endforelse
 
 @endsection
+
+@section('menu')
+    1 item <br>
+    2 item
+@endsection

@@ -72,8 +72,7 @@
     <body>
     <div>
         <div class="top-left">
-            1 item <br>
-            2 item
+            @yield('menu')
         </div>
             <div class="content">
                 @yield('content')
