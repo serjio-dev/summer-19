@@ -18,4 +18,4 @@ Route::get('/posts', 'PostController@getPosts')->name('posts_all');
 Route::get('/posts/{id}', 'PostController@getPost')->name('post_get');
 
 
-Route::get('/product/{id}/buy', 'BuyController@addToBuy')->name('product_buy');
+Route::post('/product/{id}/buy', 'BuyController@addToBuy')->name('product_buy');

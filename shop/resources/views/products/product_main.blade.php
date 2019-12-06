@@ -7,19 +7,17 @@
 
 @section('content')
     @foreach($products as $product)
-        <div class="title">
-            {{ $product->name }}
-        </div>
-        <div class="flex-center">
-            {{ $product->desc }}
-        </div>
-        <div>
-            <a href="{{ \Illuminate\Support\Facades\URL::route('product_buy', ['id' => $product->id]) }}">Купить: {{ $product->price }} </a>
-        </div>
+        @include('products.product')
     @endforeach
 @endsection
 
 @section('menu')
+    @if(count(session()->get('products')) > 0)
+        Вы заказали {{  count(session()->get('products')) }} позиций
+        <br>
+        <a href="">Оформить заказ</a>
+    @endif
+    <br/>
     @foreach($categories as $category)
         <a href="{{ \Illuminate\Support\Facades\URL::route('products_by_category', ['id' => $category->id]) }}"> {{ $category->name }}</a> <br>
     @endforeach
