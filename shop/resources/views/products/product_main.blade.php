@@ -12,7 +12,7 @@
 @endsection
 
 @section('menu')
-    @if(count(session()->get('products')) > 0)
+    @if(session()->has('products') && count(session()->get('products')) > 0)
         Вы заказали {{  count(session()->get('products')) }} позиций
         <br>
         <a href="">Оформить заказ</a>

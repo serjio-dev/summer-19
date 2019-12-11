@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Product;
+use App\Services\TrashProductServices;
+use App\Services\TrashProductSessionServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +13,15 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class BuyController extends Controller
 {
+    /**
+     * @var TrashProductServices
+     */
+    private $trashProductServices;
+
+    public function __construct(TrashProductServices $trashProductServices)
+    {
+        $this->trashProductServices = $trashProductServices;
+    }
     public function addToBuy(Request $request, int $id)
     {
         $product = Product::findOrFail($id);
@@ -22,8 +33,7 @@ class BuyController extends Controller
         $validateData = $validator->validate();
         $count = $validateData['count'];
 
-        session()->push('products', $id .':'. $count);
-        session()->save();
+        $this->trashProductServices->setCount($product, $count);
 
         return Redirect::to(route('product_all'));
     }
@@ -31,17 +41,7 @@ class BuyController extends Controller
     public function getListProducts()
     {
         $categories = Category::all();
-        $products = [];
-        $sessionProducts = session()->get('products');
-        foreach ($sessionProducts as $sessionProduct) {
-            list($productId, $count) = explode(':', $sessionProduct);
-
-            $product = Product::findOrFail($productId);
-            $products[] = [
-                'product' => $product,
-                'count' => $count,
-            ];
-        }
+        $products = $this->trashProductServices->getList();
 
         return view('products.products_list_buy', ['categories' => $categories, 'products' => $products]);
     }
